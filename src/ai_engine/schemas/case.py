@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Dict, List
+from typing import Dict
 
 
 class DecisionCase(BaseModel):
@@ -10,7 +10,7 @@ class DecisionCase(BaseModel):
     telemetry_summary: Dict[str, str] = Field(..., description="Summarized telemetry signals")
     operating_context: Dict[str, str] = Field(..., description="Operating context")
 
-    reported_symptoms: List[str] = Field(default_factory=list, description="Reported symptoms")
+    reported_symptoms: list[str] = Field(default_factory=list, description="Reported symptoms")
     timestamp: str = Field(..., description="Case timestamp")
 
 
