@@ -2,8 +2,8 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from src.ai_engine.schemas.case import DecisionCase, NormalizedCase
-from src.ai_engine.schemas.decision import (
+from ai_engine.schemas.case import DecisionCase, NormalizedCase
+from ai_engine.schemas.decision import (
     FinalDecision,
     GuardrailResult,
     PolicyResult,
