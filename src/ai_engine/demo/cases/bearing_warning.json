@@ -1,0 +1,22 @@
+{
+  "case_id": "case_002",
+  "asset_type": "bearing",
+  "scenario_type": "bearing_warning",
+  "telemetry_summary": {
+    "vibration": "slightly_increasing",
+    "temperature": "slightly_high",
+    "noise": "abnormal",
+    "lubrication_condition": "degrading"
+  },
+  "operating_context": {
+    "load": "moderate",
+    "speed_rpm": "1800",
+    "runtime_hours": "3200",
+    "environment": "dusty"
+  },
+  "reported_symptoms": [
+    "abnormal_noise",
+    "early_wear_signs"
+  ],
+  "timestamp": "2026-01-01T11:00:00Z"
+}

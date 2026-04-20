@@ -1,0 +1,19 @@
+{
+  "case_id": "case_001",
+  "asset_type": "bearing",
+  "scenario_type": "bearing_healthy",
+  "telemetry_summary": {
+    "vibration": "stable",
+    "temperature": "normal",
+    "noise": "normal",
+    "lubrication_condition": "good"
+  },
+  "operating_context": {
+    "load": "normal",
+    "speed_rpm": "1500",
+    "runtime_hours": "1200",
+    "environment": "clean"
+  },
+  "reported_symptoms": [],
+  "timestamp": "2026-01-01T10:00:00Z"
+}
