@@ -1,0 +1,23 @@
+{
+  "case_id": "case_003",
+  "asset_type": "bearing",
+  "scenario_type": "bearing_critical",
+  "telemetry_summary": {
+    "vibration": "high",
+    "temperature": "overheating",
+    "noise": "severe",
+    "lubrication_condition": "poor"
+  },
+  "operating_context": {
+    "load": "high",
+    "speed_rpm": "2200",
+    "runtime_hours": "8000",
+    "environment": "hot"
+  },
+  "reported_symptoms": [
+    "strong_vibration",
+    "overheating",
+    "burning_smell"
+  ],
+  "timestamp": "2026-01-01T12:00:00Z"
+}
