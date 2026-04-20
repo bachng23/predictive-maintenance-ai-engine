@@ -3,7 +3,7 @@ from typing import Dict
 
 from pydantic import BaseModel, Field
 
-from ai_engine.schemas.enums import OperationalSeverity, ScenarioType
+from src.ai_engine.schemas.enums import OperationalSeverity, ScenarioType
 
 
 class DecisionCase(BaseModel):

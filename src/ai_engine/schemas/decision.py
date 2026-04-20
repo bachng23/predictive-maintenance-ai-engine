@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from ai_engine.schemas.enums import (
+from src.ai_engine.schemas.enums import (
     ActionType,
     ApprovalStatus,
     OperationalSeverity,
