@@ -1,0 +1,41 @@
+thresholds:
+  low_confidence: 0.65
+
+approval:
+  criticality_requires_approval:
+    - high
+    - critical
+  actions_require_approval:
+    - PLAN_MAINTENANCE
+    - ESCALATE
+    - CONTROLLED_STOP
+
+action_matrix:
+  low:
+    - RUN
+    - RUN_WITH_MONITORING
+  medium:
+    - RUN_WITH_MONITORING
+    - INSPECT
+    - PLAN_MAINTENANCE
+  high:
+    - INSPECT
+    - PLAN_MAINTENANCE
+    - ESCALATE
+  critical:
+    - ESCALATE
+    - CONTROLLED_STOP
+
+blocking_rules:
+  severe_data_quality_blocks:
+    - RUN
+    - RUN_WITH_MONITORING
+    - PLAN_MAINTENANCE
+    - CONTROLLED_STOP
+  severe_drift_blocks:
+    - RUN
+    - RUN_WITH_MONITORING
+    - CONTROLLED_STOP
+  low_confidence_blocks:
+    - PLAN_MAINTENANCE
+    - CONTROLLED_STOP
