@@ -1,24 +1,13 @@
-from typing import Optional
-
 from pydantic import BaseModel, Field
 
-from ai_engine.schemas.case import DecisionCase, NormalizedCase
-from ai_engine.schemas.decision import (
-    FinalDecision,
-    GuardrailResult,
-    PolicyResult,
-    ReasoningResult,
-    RiskAssessment,
-)
+from ai_engine.schemas.case import DecisionCase
+from ai_engine.schemas.decision import FinalDecision, GuardrailResult, PolicyResult, ReasoningResult, RiskAssessment
 
 
 class DecisionState(BaseModel):
-    case: DecisionCase = Field(..., description="Original case data")
-    normalized_case: Optional[NormalizedCase] = Field(None, description="Normalized case data")
-
-    risk: Optional[RiskAssessment] = Field(None, description="Risk assessment for the case")
-    policy: Optional[PolicyResult] = Field(None, description="Policy result for the case")
-    guardrail: Optional[GuardrailResult] = Field(None, description="Guardrail result for the case")
-    reasoning: Optional[ReasoningResult] = Field(None, description="Reasoning output for the case")
-
-    final_decision: Optional[FinalDecision] = Field(None, description="Final decision for the case")
+    case: DecisionCase = Field(..., description="Canonical decision case snapshot.")
+    risk: RiskAssessment | None = Field(None, description="Risk assessment produced for the case.")
+    policy: PolicyResult | None = Field(None, description="Policy evaluation result for the case.")
+    guardrail: GuardrailResult | None = Field(None, description="Guardrail evaluation result for the case.")
+    reasoning: ReasoningResult | None = Field(None, description="Structured reasoning output for the case.")
+    final_decision: FinalDecision | None = Field(None, description="Final decision produced for the case.")
