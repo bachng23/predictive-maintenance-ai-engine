@@ -1,22 +1,102 @@
 {
-  "case_id": "case_002",
-  "asset_type": "bearing",
-  "scenario_type": "bearing_warning",
-  "telemetry_summary": {
-    "vibration": "slightly_increasing",
-    "temperature": "slightly_high",
-    "noise": "abnormal",
-    "lubrication_condition": "degrading"
+  "metadata": {
+    "case_id": "case_002",
+    "asset_id": "asset_bearing_01",
+    "machine_id": "machine_01",
+    "bearing_id": "bearing_a",
+    "site_id": "site_alpha",
+    "line_id": "line_1",
+    "window_start": "2026-01-01T10:00:00Z",
+    "window_end": "2026-01-01T11:00:00Z",
+    "decision_time": "2026-01-01T11:05:00Z",
+    "signal_version": "signals-v1",
+    "feature_set_version": "features-v1",
+    "model_version": "model-v1",
+    "policy_version": "policy-v1",
+    "prompt_bundle_version": "prompts-v1",
+    "schema_version": "1.0.0"
   },
-  "operating_context": {
-    "load": "moderate",
-    "speed_rpm": "1800",
-    "runtime_hours": "3200",
-    "environment": "dusty"
+  "physical_evidence": {
+    "health_score": 0.58,
+    "anomaly_score": 0.52,
+    "failure_horizon_probability": 0.39,
+    "rul_estimate_hours": 220.0,
+    "prediction_confidence": 0.84,
+    "signal_quality_score": 0.92,
+    "data_completeness_score": 0.9,
+    "drift_score": 0.15,
+    "recent_signal_trend": "degrading",
+    "data_quality_status": "ok",
+    "drift_status": "warning",
+    "top_feature_attributions": [
+      {
+        "feature_name": "temperature_mean",
+        "importance": 0.24,
+        "direction": "increase_risk"
+      },
+      {
+        "feature_name": "vibration_rms",
+        "importance": 0.29,
+        "direction": "increase_risk"
+      }
+    ],
+    "evidence_notes": [
+      "Warning signs suggest early wear progression."
+    ]
   },
-  "reported_symptoms": [
-    "abnormal_noise",
-    "early_wear_signs"
-  ],
-  "timestamp": "2026-01-01T11:00:00Z"
+  "business_context": {
+    "asset_criticality": "high",
+    "due_date_pressure": "medium",
+    "queue_length": 4,
+    "production_backlog_level": "medium",
+    "downtime_cost_per_hour": 1100.0,
+    "lateness_penalty_estimate": 1200.0,
+    "maintenance_cost_estimate": 700.0,
+    "emergency_failure_cost_estimate": 10000.0,
+    "spare_availability": "limited",
+    "technician_availability": "available",
+    "maintenance_window_available": true,
+    "current_load_pct": 73.0,
+    "order_id": "order_warning_01",
+    "customer_priority": "high",
+    "shift_restriction": "night shift only",
+    "business_notes": [
+      "Maintenance can be planned but should avoid peak hours."
+    ]
+  },
+  "decision_control": {
+    "allowed_actions": [
+      "RUN_WITH_MONITORING",
+      "INSPECT",
+      "PLAN_MAINTENANCE",
+      "ESCALATE"
+    ],
+    "blocked_actions": [
+      "RUN"
+    ],
+    "approval_required": true,
+    "policy_flags": [
+      "warning_state",
+      "high_criticality_asset"
+    ]
+  },
+  "manager_recommendation": {
+    "recommended_action": "PLAN_MAINTENANCE",
+    "rationale": [
+      "Degrading trend and moderate business pressure support planned intervention."
+    ],
+    "evidence_used": [
+      "failure_horizon_probability",
+      "recent_signal_trend"
+    ],
+    "unresolved_assumptions": [
+      "Confirm technician slot during allowed maintenance window."
+    ]
+  },
+  "approval_state": {
+    "status": "pending",
+    "decided_by": null,
+    "decided_at": null,
+    "comments": null
+  }
 }

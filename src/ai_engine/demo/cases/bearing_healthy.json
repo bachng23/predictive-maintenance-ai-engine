@@ -1,19 +1,92 @@
 {
-  "case_id": "case_001",
-  "asset_type": "bearing",
-  "scenario_type": "bearing_healthy",
-  "telemetry_summary": {
-    "vibration": "stable",
-    "temperature": "normal",
-    "noise": "normal",
-    "lubrication_condition": "good"
+  "metadata": {
+    "case_id": "case_001",
+    "asset_id": "asset_bearing_01",
+    "machine_id": "machine_01",
+    "bearing_id": "bearing_a",
+    "site_id": "site_alpha",
+    "line_id": "line_1",
+    "window_start": "2026-01-01T09:00:00Z",
+    "window_end": "2026-01-01T10:00:00Z",
+    "decision_time": "2026-01-01T10:05:00Z",
+    "signal_version": "signals-v1",
+    "feature_set_version": "features-v1",
+    "model_version": "model-v1",
+    "policy_version": "policy-v1",
+    "prompt_bundle_version": "prompts-v1",
+    "schema_version": "1.0.0"
   },
-  "operating_context": {
-    "load": "normal",
-    "speed_rpm": "1500",
-    "runtime_hours": "1200",
-    "environment": "clean"
+  "physical_evidence": {
+    "health_score": 0.94,
+    "anomaly_score": 0.08,
+    "failure_horizon_probability": 0.04,
+    "rul_estimate_hours": 850.0,
+    "prediction_confidence": 0.95,
+    "signal_quality_score": 0.98,
+    "data_completeness_score": 0.99,
+    "drift_score": 0.03,
+    "recent_signal_trend": "stable",
+    "data_quality_status": "ok",
+    "drift_status": "none",
+    "top_feature_attributions": [
+      {
+        "feature_name": "vibration_rms",
+        "importance": 0.12,
+        "direction": "decrease_risk"
+      }
+    ],
+    "evidence_notes": [
+      "Signals remain within healthy operating range."
+    ]
   },
-  "reported_symptoms": [],
-  "timestamp": "2026-01-01T10:00:00Z"
+  "business_context": {
+    "asset_criticality": "medium",
+    "due_date_pressure": "low",
+    "queue_length": 2,
+    "production_backlog_level": "low",
+    "downtime_cost_per_hour": 700.0,
+    "lateness_penalty_estimate": 250.0,
+    "maintenance_cost_estimate": 450.0,
+    "emergency_failure_cost_estimate": 7000.0,
+    "spare_availability": "available",
+    "technician_availability": "available",
+    "maintenance_window_available": true,
+    "current_load_pct": 58.0,
+    "order_id": "order_healthy_01",
+    "customer_priority": "medium",
+    "shift_restriction": null,
+    "business_notes": [
+      "No major production pressure at this time."
+    ]
+  },
+  "decision_control": {
+    "allowed_actions": [
+      "RUN",
+      "RUN_WITH_MONITORING"
+    ],
+    "blocked_actions": [
+      "CONTROLLED_STOP"
+    ],
+    "approval_required": false,
+    "policy_flags": [
+      "healthy_state"
+    ]
+  },
+  "manager_recommendation": {
+    "recommended_action": "RUN",
+    "rationale": [
+      "Evidence indicates stable bearing behavior."
+    ],
+    "evidence_used": [
+      "health_score",
+      "anomaly_score"
+    ],
+    "unresolved_assumptions": []
+  },
+  "approval_state": {
+    "status": "not_required",
+    "decided_by": null,
+    "decided_at": null,
+    "comments": null
+  }
 }

@@ -1,65 +1,70 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from ai_engine.schemas.case import NormalizedCase
 from ai_engine.schemas.decision import RiskAssessment
-from ai_engine.schemas.enums import RiskLevel, ActionType, OperationalSeverity
+from ai_engine.schemas.enums import ActionType, RiskLevel
+from ai_engine.schemas.evidence import PhysicalEvidence
+
 
 @dataclass(slots=True)
 class RiskEngineConfig:
-    signal_value_map: dict[str, float] = field(
-        default_factory=lambda: {
-            "stable": 0.05,
-            "normal": 0.10,
-            "good": 0.10,
-            "slightly_increasing": 0.45,
-            "slightly_high": 0.45,
-            "abnormal": 0.55,
-            "degrading": 0.50,
-            "high": 0.85,
-            "overheating": 0.95,
-            "severe": 0.95,
-            "poor": 0.85,
-        }
-    )
-
-    severity_map: dict[OperationalSeverity, float] = field(
-        default_factory=lambda: {
-            OperationalSeverity.LOW: 0.15,
-            OperationalSeverity.MEDIUM: 0.45,
-            OperationalSeverity.HIGH: 0.80,
-        }
-    )
-    
-    low_threshold: float = 0.3
-    medium_threshold: float = 0.6
-    high_threshold: float = 0.8
+    low_threshold: float = 0.30
+    medium_threshold: float = 0.60
+    high_threshold: float = 0.80
 
 
 class RiskEngine:
-    def __init__(self, config: RiskEngineConfig | None = None):
+    def __init__(self, config: RiskEngineConfig | None = None) -> None:
         self.config = config or RiskEngineConfig()
 
-    def assess(self, normalized_case: NormalizedCase) -> RiskAssessment:
-        evidence = self._extract_evidence(normalized_case)
+    def assess(self, evidence: PhysicalEvidence) -> RiskAssessment:
         score = self._score(evidence)
         risk_level = self._map_risk_level(score)
-        confidence = self._calculate_confidence(score, normalized_case)
-        contributing_factors = self.build_contributing_factors(evidence, normalized_case, score)
-        recommended_actions = self._recommended_actions_for(risk_level)
-
         return RiskAssessment(
             risk_level=risk_level,
-            confidence=confidence,
-            contributing_factors=contributing_factors,
-            recommended_actions=recommended_actions,
+            confidence=evidence.prediction_confidence,
+            contributing_factors=self._build_contributing_factors(evidence),
+            recommended_actions=self._recommended_actions_for(risk_level),
         )
-    
-    def _extract_evidence(self, normalized_case: NormalizedCase) -> dict[str, float]:
-        signal_scores = []
 
-        for value in normalized_case.detected_signals.values():
-            signal_scores.append(self.config.signal_value_map.get(value.strip().lower(), 0.40))
-        
-        signal_score = sum(signal_scores) / len
+    def _score(self, evidence: PhysicalEvidence) -> float:
+        weighted_values = [
+            evidence.anomaly_score or 0.0,
+            evidence.failure_horizon_probability or 0.0,
+            1.0 - (evidence.health_score or 1.0),
+        ]
+        return sum(weighted_values) / len(weighted_values)
+
+    def _map_risk_level(self, score: float) -> RiskLevel:
+        if score >= self.config.high_threshold:
+            return RiskLevel.CRITICAL
+        if score >= self.config.medium_threshold:
+            return RiskLevel.HIGH
+        if score >= self.config.low_threshold:
+            return RiskLevel.MEDIUM
+        return RiskLevel.LOW
+
+    def _build_contributing_factors(self, evidence: PhysicalEvidence) -> list[str]:
+        factors: list[str] = []
+        if evidence.anomaly_score is not None and evidence.anomaly_score >= self.config.medium_threshold:
+            factors.append("Anomaly score exceeds the medium-risk threshold.")
+        if (
+            evidence.failure_horizon_probability is not None
+            and evidence.failure_horizon_probability >= self.config.medium_threshold
+        ):
+            factors.append("Failure horizon probability indicates elevated near-term risk.")
+        if evidence.rul_estimate_hours is not None and evidence.rul_estimate_hours <= 72.0:
+            factors.append("Estimated remaining useful life is below 72 hours.")
+        if evidence.drift_status.value != "none":
+            factors.append("Input distribution shows measurable drift.")
+        return factors
+
+    def _recommended_actions_for(self, risk_level: RiskLevel) -> list[ActionType]:
+        action_map = {
+            RiskLevel.LOW: [ActionType.RUN],
+            RiskLevel.MEDIUM: [ActionType.RUN_WITH_MONITORING, ActionType.INSPECT],
+            RiskLevel.HIGH: [ActionType.INSPECT, ActionType.PLAN_MAINTENANCE, ActionType.ESCALATE],
+            RiskLevel.CRITICAL: [ActionType.ESCALATE, ActionType.CONTROLLED_STOP],
+        }
+        return action_map[risk_level]

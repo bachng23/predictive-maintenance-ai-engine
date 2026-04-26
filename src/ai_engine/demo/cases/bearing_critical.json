@@ -1,23 +1,103 @@
 {
-  "case_id": "case_003",
-  "asset_type": "bearing",
-  "scenario_type": "bearing_critical",
-  "telemetry_summary": {
-    "vibration": "high",
-    "temperature": "overheating",
-    "noise": "severe",
-    "lubrication_condition": "poor"
+  "metadata": {
+    "case_id": "case_003",
+    "asset_id": "asset_bearing_01",
+    "machine_id": "machine_01",
+    "bearing_id": "bearing_a",
+    "site_id": "site_alpha",
+    "line_id": "line_1",
+    "window_start": "2026-01-01T11:00:00Z",
+    "window_end": "2026-01-01T12:00:00Z",
+    "decision_time": "2026-01-01T12:05:00Z",
+    "signal_version": "signals-v1",
+    "feature_set_version": "features-v1",
+    "model_version": "model-v1",
+    "policy_version": "policy-v1",
+    "prompt_bundle_version": "prompts-v1",
+    "schema_version": "1.0.0"
   },
-  "operating_context": {
-    "load": "high",
-    "speed_rpm": "2200",
-    "runtime_hours": "8000",
-    "environment": "hot"
+  "physical_evidence": {
+    "health_score": 0.11,
+    "anomaly_score": 0.94,
+    "failure_horizon_probability": 0.88,
+    "rul_estimate_hours": 18.0,
+    "prediction_confidence": 0.91,
+    "signal_quality_score": 0.94,
+    "data_completeness_score": 0.96,
+    "drift_score": 0.1,
+    "recent_signal_trend": "degrading",
+    "data_quality_status": "ok",
+    "drift_status": "warning",
+    "top_feature_attributions": [
+      {
+        "feature_name": "temperature_peak",
+        "importance": 0.37,
+        "direction": "increase_risk"
+      },
+      {
+        "feature_name": "vibration_kurtosis",
+        "importance": 0.34,
+        "direction": "increase_risk"
+      }
+    ],
+    "evidence_notes": [
+      "Evidence suggests a near-term failure risk."
+    ]
   },
-  "reported_symptoms": [
-    "strong_vibration",
-    "overheating",
-    "burning_smell"
-  ],
-  "timestamp": "2026-01-01T12:00:00Z"
+  "business_context": {
+    "asset_criticality": "critical",
+    "due_date_pressure": "high",
+    "queue_length": 8,
+    "production_backlog_level": "high",
+    "downtime_cost_per_hour": 2400.0,
+    "lateness_penalty_estimate": 6800.0,
+    "maintenance_cost_estimate": 1300.0,
+    "emergency_failure_cost_estimate": 24000.0,
+    "spare_availability": "limited",
+    "technician_availability": "limited",
+    "maintenance_window_available": false,
+    "current_load_pct": 91.0,
+    "order_id": "order_critical_01",
+    "customer_priority": "critical",
+    "shift_restriction": "supervisor sign-off required",
+    "business_notes": [
+      "Stopping the machine has a heavy delivery impact."
+    ]
+  },
+  "decision_control": {
+    "allowed_actions": [
+      "INSPECT",
+      "ESCALATE",
+      "CONTROLLED_STOP"
+    ],
+    "blocked_actions": [
+      "RUN",
+      "RUN_WITH_MONITORING"
+    ],
+    "approval_required": true,
+    "policy_flags": [
+      "critical_state",
+      "stop_requires_supervisor_approval"
+    ]
+  },
+  "manager_recommendation": {
+    "recommended_action": "CONTROLLED_STOP",
+    "rationale": [
+      "Failure probability is high enough that continued operation is not acceptable."
+    ],
+    "evidence_used": [
+      "anomaly_score",
+      "rul_estimate_hours",
+      "failure_horizon_probability"
+    ],
+    "unresolved_assumptions": [
+      "Supervisor approval is still required before dispatching the stop action."
+    ]
+  },
+  "approval_state": {
+    "status": "pending",
+    "decided_by": null,
+    "decided_at": null,
+    "comments": null
+  }
 }
