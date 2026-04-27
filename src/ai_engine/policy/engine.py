@@ -31,11 +31,11 @@ class PolicyEngine:
         evidence = case.physical_evidence
         business = case.business_context
 
-        if evidence.data_quality_status is DataQualityLevel.SEVERE:
+        if evidence.data_quality_status == DataQualityLevel.SEVERE:
             blocked_actions.update(self._actions_from_config("severe_data_quality_blocks"))
             policy_notes.append("Severe data quality blocks run and high-impact actions.")
 
-        if evidence.drift_status is DriftStatus.SEVERE:
+        if evidence.drift_status == DriftStatus.SEVERE:
             blocked_actions.update(self._actions_from_config("severe_drift_blocks"))
             policy_notes.append("Severe drift reduces trust in continued running or stop actions.")
 
@@ -48,11 +48,11 @@ class PolicyEngine:
             blocked_actions.add(ActionType.PLAN_MAINTENANCE)
             policy_notes.append("No maintenance window is currently available.")
 
-        if business.technician_availability is AvailabilityStatus.UNAVAILABLE:
+        if business.technician_availability == AvailabilityStatus.UNAVAILABLE:
             blocked_actions.add(ActionType.PLAN_MAINTENANCE)
             policy_notes.append("Technician availability does not support planned maintenance now.")
 
-        if business.spare_availability is AvailabilityStatus.UNAVAILABLE:
+        if business.spare_availability == AvailabilityStatus.UNAVAILABLE:
             blocked_actions.add(ActionType.PLAN_MAINTENANCE)
             policy_notes.append("Spare availability does not support planned maintenance now.")
 
@@ -102,4 +102,4 @@ class PolicyEngine:
         if case.business_context.asset_criticality in criticality_requires_approval:
             return True
 
-        return any(action in actions_require_approval for action in allowed_actions)
+        return any(action in actions_require_approval for action in allowed_actions)    
