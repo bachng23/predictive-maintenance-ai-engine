@@ -5,7 +5,7 @@ __pycache__/
 .pytest_cache/
 .venv/
 .env
+.langgraph_api/
 
 # Keep project documentation tracked.
 docs/
-.DS_Store
