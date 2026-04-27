@@ -10,6 +10,7 @@ from ai_engine.schemas.state import DecisionState
 risk_engine = RiskEngine()
 policy_engine = PolicyEngine()
 guardrails_engine = GuardrailEngine()
+reasoning_engine = ReasoningEngine()
 composer = DecisionComposer()
 
 def assess_risk_node(state: DecisionState) -> dict:
@@ -34,18 +35,13 @@ def reasoning_node(state: DecisionState) -> dict:
     if state.risk is None or state.policy is None or state.guardrail is None:
         raise ValueError("Risk assessment, policy result, and guardrail result are all required before reasoning.")
 
-    try:
-        engine = ReasoningEngine()
-        reasoning = engine.generate_reasoning(
-            state.case, 
-            state.risk, 
-            state.policy, 
-            state.guardrail
-        )
-        return {"reasoning": reasoning}
-    
-    except Exception as e:
-        return {"reasoning": None, "reasoning_error": str(e)}
+    reasoning = reasoning_engine.generate(
+        case=state.case,
+        risk=state.risk,
+        policy=state.policy,
+        guardrail=state.guardrail,
+    )
+    return {"reasoning": reasoning}
 
 def compose_decision_node(state: DecisionState) -> dict:
     if state.risk is None or state.policy is None or state.guardrail is None:
