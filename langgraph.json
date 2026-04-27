@@ -1,0 +1,8 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "decision_engine": "./src/ai_engine/orchestration/graph.py:graph"
+  },
+  "python_version": "3.12",
+  "env": ".env"
+}

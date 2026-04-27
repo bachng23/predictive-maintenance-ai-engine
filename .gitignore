@@ -8,3 +8,4 @@ __pycache__/
 
 # Keep project documentation tracked.
 docs/
+.DS_Store
