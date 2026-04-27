@@ -142,11 +142,11 @@ class DecisionComposer:
         approval_state: ApprovalState,
         policy: PolicyResult,
     ) -> ApprovalStatus:
-        if approval_state.status is ApprovalStatus.APPROVED:
+        if approval_state.status == ApprovalStatus.APPROVED:
             return ApprovalStatus.APPROVED
-        if approval_state.status is ApprovalStatus.REJECTED:
+        if approval_state.status == ApprovalStatus.REJECTED:
             return ApprovalStatus.REJECTED
-        if approval_state.status is ApprovalStatus.BLOCKED:
+        if approval_state.status == ApprovalStatus.BLOCKED:
             return ApprovalStatus.BLOCKED
         if policy.requires_human_approval:
             return ApprovalStatus.PENDING
@@ -195,9 +195,9 @@ class DecisionComposer:
 
         steps = list(steps_by_action[action])
 
-        if approval_status is ApprovalStatus.PENDING:
+        if approval_status == ApprovalStatus.PENDING:
             steps.insert(0, "Obtain required human approval before execution.")
-        if approval_status is ApprovalStatus.REJECTED:
+        if approval_status == ApprovalStatus.REJECTED:
             steps.insert(0, "Reassess the case after rejection and provide an alternative action.")
 
         return steps
