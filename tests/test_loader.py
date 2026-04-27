@@ -20,9 +20,9 @@ def test_load_case_by_case_name() -> None:
     case = loader.load_case("bearing_healthy")
 
     assert case.metadata.case_id == "case_001"
-    assert case.physical_evidence.data_quality_status is DataQualityLevel.OK
+    assert case.physical_evidence.data_quality_status == DataQualityLevel.OK
     assert case.decision_control.allowed_actions == [ActionType.RUN, ActionType.RUN_WITH_MONITORING]
-    assert case.approval_state.status is ApprovalStatus.NOT_REQUIRED
+    assert case.approval_state.status == ApprovalStatus.NOT_REQUIRED
 
 
 def test_load_case_raises_structured_error_for_unknown_case() -> None:

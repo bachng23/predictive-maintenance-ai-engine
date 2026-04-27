@@ -99,8 +99,8 @@ def test_decision_case_accepts_structured_snapshot() -> None:
 
     assert case.metadata.case_id == "case-1"
     assert case.metadata.decision_time == datetime(2026, 4, 20, 11, 5, tzinfo=timezone.utc)
-    assert case.physical_evidence.recent_signal_trend is SignalTrend.DEGRADING
-    assert case.business_context.customer_priority is CustomerPriority.CRITICAL
+    assert case.physical_evidence.recent_signal_trend == SignalTrend.DEGRADING
+    assert case.business_context.customer_priority == CustomerPriority.CRITICAL
 
 
 def test_physical_evidence_rejects_invalid_probability() -> None:
@@ -141,6 +141,6 @@ def test_reasoning_and_final_decision_contracts_are_instantiable() -> None:
         next_steps=["Prepare parts and technician schedule."],
     )
 
-    assert reasoning.recommended_action is ActionType.PLAN_MAINTENANCE
-    assert final_decision.risk_level is RiskLevel.MEDIUM
+    assert reasoning.recommended_action == ActionType.PLAN_MAINTENANCE
+    assert final_decision.risk_level == RiskLevel.MEDIUM
     assert final_decision.next_steps == ["Prepare parts and technician schedule."]

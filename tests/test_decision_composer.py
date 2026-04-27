@@ -112,12 +112,12 @@ def test_composer_uses_reasoning_action_when_allowed() -> None:
 
     recommendation, final_decision = composer.compose(case, risk, policy, guardrail, reasoning)
 
-    assert recommendation.recommended_action is ActionType.PLAN_MAINTENANCE
+    assert recommendation.recommended_action == ActionType.PLAN_MAINTENANCE
     assert "Human approval is required before execution." in recommendation.unresolved_assumptions
     assert "Shift restriction in effect: night shift only" in recommendation.unresolved_assumptions
-    assert final_decision.action is ActionType.PLAN_MAINTENANCE
-    assert final_decision.approval_status is ApprovalStatus.PENDING
-    assert final_decision.priority is PriorityLevel.HIGH
+    assert final_decision.action == ActionType.PLAN_MAINTENANCE
+    assert final_decision.approval_status == ApprovalStatus.PENDING
+    assert final_decision.priority == PriorityLevel.HIGH
     assert final_decision.next_steps[0] == "Obtain required human approval before execution."
 
 
@@ -135,11 +135,11 @@ def test_composer_falls_back_to_first_policy_action_without_reasoning() -> None:
 
     recommendation, final_decision = composer.compose(case, risk, policy, guardrail, reasoning=None)
 
-    assert recommendation.recommended_action is ActionType.RUN_WITH_MONITORING
+    assert recommendation.recommended_action == ActionType.RUN_WITH_MONITORING
     assert recommendation.rationale == ["Recommendation derived from policy-ranked allowed actions."]
-    assert final_decision.action is ActionType.RUN_WITH_MONITORING
-    assert final_decision.approval_status is ApprovalStatus.NOT_REQUIRED
-    assert final_decision.priority is PriorityLevel.MEDIUM
+    assert final_decision.action == ActionType.RUN_WITH_MONITORING
+    assert final_decision.approval_status == ApprovalStatus.NOT_REQUIRED
+    assert final_decision.priority == PriorityLevel.MEDIUM
 
 
 def test_composer_escalates_blocked_case() -> None:
@@ -160,8 +160,8 @@ def test_composer_escalates_blocked_case() -> None:
 
     recommendation, final_decision = composer.compose(case, risk, policy, guardrail, reasoning=None)
 
-    assert recommendation.recommended_action is ActionType.ESCALATE
-    assert final_decision.action is ActionType.ESCALATE
-    assert final_decision.approval_status is ApprovalStatus.BLOCKED
-    assert final_decision.priority is PriorityLevel.URGENT
+    assert recommendation.recommended_action == ActionType.ESCALATE
+    assert final_decision.action == ActionType.ESCALATE
+    assert final_decision.approval_status == ApprovalStatus.BLOCKED
+    assert final_decision.priority == PriorityLevel.URGENT
     assert "Controlled stop requires explicit approval before execution." in final_decision.decision_notes
