@@ -2,6 +2,7 @@ import pytest
 from pydantic import ValidationError
 
 from ai_engine.modeling.evidence_adapter import ModelEvidenceAdapter
+from ai_engine.modeling.contracts import ModelOutput
 from ai_engine.schemas.enums import DataQualityLevel, DriftStatus, FeatureDirection, SignalTrend
 
 
@@ -41,6 +42,16 @@ def test_adapter_converts_model_payload_to_physical_evidence() -> None:
     assert evidence.drift_status == DriftStatus.WARNING
     assert evidence.top_feature_attributions[0].feature_name == "vibration_rms"
     assert evidence.top_feature_attributions[0].direction == FeatureDirection.INCREASE_RISK
+
+
+def test_adapter_normalizes_payload_to_model_output_contract() -> None:
+    adapter = ModelEvidenceAdapter()
+
+    model_output = adapter.to_model_output(build_payload())
+
+    assert isinstance(model_output, ModelOutput)
+    assert model_output.failure_horizon_probability == 0.61
+    assert model_output.inference_context.horizon_hours is None
 
 
 def test_adapter_rejects_invalid_probability() -> None:

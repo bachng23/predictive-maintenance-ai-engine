@@ -1,3 +1,4 @@
+from ai_engine.modeling.contracts import ModelOutput
 from ai_engine.modeling.evidence_adapter import ModelEvidenceAdapter
 from ai_engine.modeling.runtime import MockModelRuntime, ModelInput, ModelPrediction, ModelRuntime
 from ai_engine.schemas.evidence import PhysicalEvidence
@@ -20,10 +21,13 @@ def test_mock_model_runtime_returns_model_prediction() -> None:
     )
 
     assert isinstance(prediction, ModelPrediction)
+    assert isinstance(prediction, ModelOutput)
     assert prediction.anomaly_score is not None
     assert 0.0 <= prediction.anomaly_score <= 1.0
     assert prediction.failure_horizon_probability is not None
     assert 0.0 <= prediction.failure_horizon_probability <= 1.0
+    assert prediction.inference_context.horizon_hours == 72.0
+    assert prediction.inference_context.model_name == "mock_runtime"
 
 
 def test_model_prediction_can_flow_through_evidence_adapter() -> None:
